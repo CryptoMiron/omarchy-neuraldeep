@@ -111,6 +111,7 @@ i18n/en.json
 i18n/ru.json
 test/neuraldeep-test.sh
 preview.png
+preview-ru.png
 README.md
 README.ru.md
 LICENSE

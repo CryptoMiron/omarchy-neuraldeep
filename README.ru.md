@@ -11,7 +11,7 @@
 - **Только локально.** Без телеметрии, записи на диск и удалённых команд. Два GET-запроса к NeuralDeep — и ключ больше никуда не уходит.
 - **Нативная установка.** Одна команда `omarchy plugin add`, без сборки и отдельных сервисов.
 
-![Панель NeuralDeep](preview.png)
+![Панель NeuralDeep](preview-ru.png)
 
 *Превью на демо-данных.*
 
@@ -111,6 +111,7 @@ i18n/en.json
 i18n/ru.json
 test/neuraldeep-test.sh
 preview.png
+preview-ru.png
 README.md
 README.ru.md
 LICENSE

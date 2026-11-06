@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "miron.neuraldeep",
   "name": "NeuralDeep",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "CryptoMiron",
   "license": "MIT",
   "homepage": "https://github.com/CryptoMiron/omarchy-neuraldeep",
