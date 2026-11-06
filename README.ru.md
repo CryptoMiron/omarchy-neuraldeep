@@ -53,12 +53,11 @@ omarchy plugin add https://github.com/CryptoMiron/omarchy-neuraldeep.git --yes
 omarchy plugin enable miron.neuraldeep --section right
 ```
 
-Ручная установка, если хотите сначала прочитать код:
+Чтобы сначала прочитать код, установите без `--enable`, откройте папку плагина, затем включите:
 
 ```sh
-git clone https://github.com/CryptoMiron/omarchy-neuraldeep.git \
-  ~/.config/omarchy/plugins/miron.neuraldeep
-omarchy plugin validate ~/.config/omarchy/plugins/miron.neuraldeep
+omarchy plugin add https://github.com/CryptoMiron/omarchy-neuraldeep.git --yes
+less ~/.config/omarchy/plugins/miron.neuraldeep/Widget.qml
 omarchy plugin enable miron.neuraldeep --section right
 ```
 

@@ -53,12 +53,11 @@ omarchy plugin add https://github.com/CryptoMiron/omarchy-neuraldeep.git --yes
 omarchy plugin enable miron.neuraldeep --section right
 ```
 
-Manual install, if you want to read the code before enabling it:
+To inspect the code before enabling it, install without `--enable`, read the plugin folder, then enable it:
 
 ```sh
-git clone https://github.com/CryptoMiron/omarchy-neuraldeep.git \
-  ~/.config/omarchy/plugins/miron.neuraldeep
-omarchy plugin validate ~/.config/omarchy/plugins/miron.neuraldeep
+omarchy plugin add https://github.com/CryptoMiron/omarchy-neuraldeep.git --yes
+less ~/.config/omarchy/plugins/miron.neuraldeep/Widget.qml
 omarchy plugin enable miron.neuraldeep --section right
 ```
 
