@@ -1,0 +1,17 @@
+{
+  "title": "NeuralDeep",
+  "tooltip": "NeuralDeep · balance %1 ₽",
+  "spent30d": "Last 30 days: %1 ₽",
+  "daily": "Daily limit",
+  "session": "Session (3 h)",
+  "week": "Week",
+  "parallel": "Parallel requests: %1",
+  "nightActive": "Night window active",
+  "models": "Models",
+  "col.model": "Model",
+  "col.context": "Context",
+  "col.price": "₽ / 1M in/out",
+  "loading": "Loading data…",
+  "error.noKey": "NeuralDeep key not found. Set NEURALDEEP_API_KEY or add the provider to opencode.json.",
+  "error.fetch": "Could not load NeuralDeep data. Check the connection and try again."
+}

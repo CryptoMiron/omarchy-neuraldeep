@@ -1,0 +1,95 @@
+#!/bin/sh
+# NeuralDeep data for the bar widget: wallet balance, limits, and model
+# pricing, normalized into one JSON object. Always exits 0 and prints JSON;
+# failures come back as {"ok":false,"error":"..."} so the widget renders a
+# message instead of a broken popup.
+#
+# Key resolution, in order:
+#   1. $NEURALDEEP_API_KEY
+#   2. first line of ~/.config/neuraldeep/api-key (or $NEURALDEEP_KEY_FILE)
+#   3. providers.neuraldeep.settings.apiKey in the opencode config
+# Base URL: $NEURALDEEP_BASE_URL, else the public endpoint.
+#
+# The key is fed to curl on stdin (`-H @-`) so it never shows up in `ps`.
+# shortcut: reads the opencode config layout directly; revisit if opencode
+# moves provider credentials out of opencode.json.
+set -eu
+
+base=${NEURALDEEP_BASE_URL:-https://api.neuraldeep.ru/v1}
+key=${NEURALDEEP_API_KEY:-}
+
+if [ -z "$key" ]; then
+  key_file=${NEURALDEEP_KEY_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/neuraldeep/api-key}
+  if [ -r "$key_file" ]; then
+    key=$(head -n 1 "$key_file" | tr -d '[:space:]')
+  fi
+fi
+
+if [ -z "$key" ]; then
+  cfg=${NEURALDEEP_OPENCODE_CONFIG:-$HOME/.config/opencode/opencode.json}
+  if [ -r "$cfg" ]; then
+    key=$(jq -r '.providers.neuraldeep.settings.apiKey // empty' "$cfg" 2>/dev/null || true)
+  fi
+fi
+
+if [ -z "$key" ]; then
+  printf '%s' '{"ok":false,"error":"no-key"}'
+  exit 0
+fi
+
+limits=$(printf 'Authorization: Bearer %s\n' "$key" | curl -fsS --max-time 10 --max-filesize 262144 \
+  -H @- "$base/limits" 2>/dev/null) || limits=
+if [ -z "$limits" ]; then
+  printf '%s' '{"ok":false,"error":"unreachable"}'
+  exit 0
+fi
+
+models=$(printf 'Authorization: Bearer %s\n' "$key" | curl -fsS --max-time 15 --max-filesize 4194304 \
+  -H @- "$base/models" 2>/dev/null) || models='{"data":[]}'
+
+printf '%s' "$limits" | jq -c --argjson models "$models" '
+  def num: if type == "number" then . else null end;
+  def meter: if type == "object" then {
+      used: (.used | num),
+      limit: (.limit | num),
+      remaining: (.remaining | num),
+      resetsAt: (.resets_at // null)
+    } else null end;
+  {
+    ok: true,
+    observedAt: (.observed_at // null),
+    tier: (.tier // null),
+    key: {
+      name: (.key.name // null),
+      status: (.key.status // null),
+      billingMode: (.key.billing_mode // null)
+    },
+    wallet: (if (.wallet | type) == "object" then {
+      balance: (.wallet.balance_rub | num),
+      spent30d: (.wallet.spent_rub_30d | num)
+    } else null end),
+    daily: (if (.daily_capacity | type) == "object" then {
+      pct: (.daily_capacity.pct_used | num),
+      exhausted: (.daily_capacity.exhausted // false),
+      resetsAt: (.daily_capacity.resets_at // null)
+    } else null end),
+    chat: {
+      session: (.chat.session | meter),
+      week: (.chat.week | meter)
+    },
+    parallelLimit: (.parallel_limit | num),
+    night: (if (.night | type) == "object" then {
+      enabled: (.night.enabled // false),
+      active: (.night.active // false)
+    } else null end),
+    models: ((($models.data) // [])
+      | map(select(.type == "chat"))
+      | map({
+          id: (.id | tostring),
+          context: (.limit.context | num),
+          input: (.pricing.input_per_1m | num),
+          output: (.pricing.output_per_1m | num)
+        })
+      | sort_by([.input == null, .input]))
+  }
+' 2>/dev/null || printf '%s' '{"ok":false,"error":"parse"}'

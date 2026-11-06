@@ -1,0 +1,17 @@
+{
+  "title": "NeuralDeep",
+  "tooltip": "NeuralDeep · баланс %1\u00a0₽",
+  "spent30d": "За 30 дней: %1\u00a0₽",
+  "daily": "Дневной лимит",
+  "session": "Сессия (3\u00a0ч)",
+  "week": "Неделя",
+  "parallel": "Параллельных запросов: %1",
+  "nightActive": "Ночной режим активен",
+  "models": "Модели",
+  "col.model": "Модель",
+  "col.context": "Контекст",
+  "col.price": "₽ / 1M вх/вых",
+  "loading": "Загружаем данные…",
+  "error.noKey": "Ключ NeuralDeep не найден. Задайте NEURALDEEP_API_KEY или добавьте провайдера в opencode.json.",
+  "error.fetch": "Не удалось получить данные NeuralDeep. Проверьте соединение и повторите попытку."
+}

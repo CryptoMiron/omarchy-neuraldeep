@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "miron.neuraldeep",
+  "name": "NeuralDeep",
+  "version": "1.0.0",
+  "author": "CryptoMiron",
+  "license": "MIT",
+  "homepage": "https://github.com/CryptoMiron/omarchy-neuraldeep",
+  "description": "Wallet balance, spend, and per-model pricing for the NeuralDeep API in the Omarchy bar.",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "NeuralDeep",
+    "description": "Balance on the bar; balance, usage meters, and model pricing in the popup.",
+    "category": "AI",
+    "aliases": ["neuraldeep", "balance", "credits"],
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "refreshSec": 300
+    },
+    "schema": [
+      {
+        "key": "refreshSec",
+        "type": "integer",
+        "label": "Refresh interval (seconds)",
+        "min": 30,
+        "max": 3600,
+        "step": 30,
+        "defaultValue": 300
+      }
+    ]
+  }
+}
